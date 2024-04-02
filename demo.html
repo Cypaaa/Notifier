@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="notifier.js"></script>
+        <link rel="stylesheet" href="css/notifier.css">
+    </head>
+    
+    <body style="width:100vw;height:100vh;display:flex;justify-content:center;align-items:center;">
+        <section style="width:50vw;height: 40vh;display:flex;flex-direction:column;justify-content: space-evenly;">
+            <select id="type">
+                <option value="info" selected>info</option>
+                <option value="success">success</option>
+                <option value="warning">warning</option>
+                <option value="error">error</option>
+            </select>
+            <label>
+                Position
+                <input type="range" id="position" value="1" min="1" max="9"
+                    oninput="this.nextElementSibling.value = this.value">
+                <output>1</output>
+            </label>
+            <label>
+                Title
+                <input type="text" id="title" value="Title" placeholder="Title">
+            </label>
+            <label>
+                Message
+                <input type="text" id="message" value="Message" placeholder="Message">
+            </label>
+            <label>
+                Duration Bar
+                <input type="checkbox" id="duration_bar" checked>
+
+            </label>
+            <label>
+                Duration
+                <input type="range" id="duration" value="5000" min="1" max="10000"
+                    oninput="this.nextElementSibling.value = this.value">
+                <output>5000</output>
+                ms
+            </label>
+            <button onclick="showNotification()">Show Notification</button>
+        </section>
+        <script>
+            const notifier = new Notifier();
+
+            function showNotification() {
+                notifier.setPosition(document.getElementById("position").value);
+                notifier[document.getElementById("type").value]({
+                    data: {
+                        title: document.getElementById('title').value,
+                        message: document.getElementById('message').value,
+                    },
+                    duration: document.getElementById('duration').value,
+                    duration_bar: document.getElementById('duration_bar').checked,
+                });
+            }
+        </script>
+    </body>
+</html>

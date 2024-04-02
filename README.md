@@ -15,6 +15,7 @@ The provided CSS file is **not required** since the script inject its css.
 
 Each notification can handle a pre and a post notification callback (_optional_), a duration, a title and a message.
 The duration can be from 0ms to forever (_if not set: can be ommited_).
+The duration_bar indicates if yes or no, a bar should increase from the left to the right to show the remaining duration.
 The message and the title should be a string.
 The pre and post callbacks are optionals and can be ommited.
 
@@ -36,6 +37,7 @@ const notifier = new Notifier(9);
 
 notifier.success({
     duration: 5000, // ms
+    duration_bar: true,
     data: {
         title: "My notification title",
         message: "My notification message, it breaks to a new line if it's too long!"
@@ -47,7 +49,7 @@ notifier.success({
 
 ## Notifier class
 
-The constructor of the Notifier class takes a number from 1 to 9, which is not required but recommended, and modifiable at anytime using `notifier.position = ...`.
+The constructor of the Notifier class takes a number from 1 to 9, which is not required but recommended, and modifiable at anytime using `notifier.setPosition(...)`.
 
 ## settings
 
@@ -62,6 +64,7 @@ The complete object stucture is:
         "message": "<String>" // ommitable
     },
     "duration": "<Number>", // in ms, ommitable
+    "duration_bar": "<Boolean>", // ommitable
     "precall": "<Callback>", // ommitable
     "postcall": "<Callback>" // ommitable
 }

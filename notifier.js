@@ -22,12 +22,26 @@
 */
 
 class Notifier {
+    #position = 9;
+
     /**
      * @description Create a new Notifier object
      * @param {Number} position from 1 to 9 (1: top-left, 2: top-center, 3: top-right, 4: center-left, 5: center-center, 6: center-right, 7: bottom-left, 8: bottom-center, 9: bottom-right)
      */
-    constructor(position = 9) {
-        this.position = position;
+    constructor(position) {
+        if (!isNaN(position) && position >= 1 && position <= 9) {
+            this.#position = Number(position); // requires Number(...) else doesn't work, idk why
+        }
+    }
+
+    /**
+     * @description change the current position of the notifications
+     * @param {Number} position from 1 to 9 (1: top-left, 2: top-center, 3: top-right, 4: center-left, 5: center-center, 6: center-right, 7: bottom-left, 8: bottom-center, 9: bottom-right)
+     */
+    setPosition(position) {
+        if (!isNaN(position) && position >= 1 && position <= 9) {
+            this.#position = Number(position); // requires Number(...) else doesn't work, idk why
+        }
     }
 
     /**
@@ -62,7 +76,7 @@ class Notifier {
     custom(name, settings) { this.#show(name, settings); }
 
     getPosition() {
-        switch (this.position) {
+        switch (this.#position) {
             case 1:
                 return "top: 1rem; left: 1rem;";
             case 2:
@@ -82,7 +96,7 @@ class Notifier {
             case 9:
                 return "bottom: 1rem; right: 1rem;";
             default:
-                this.position = 9;
+                this.#position = 9;
                 return "bottom: 1rem; right: 1rem;";
         }
     }
@@ -102,7 +116,7 @@ class Notifier {
         let node = this.#builder(type, settings.data);
 
         // handle close button
-        notification.querySelector(".notifier-close").addEventListener("click", () => {
+        node.querySelector(".notifier-close").addEventListener("click", () => {
             this.#removeNode(node, settings.postcall);
         });
 
@@ -111,10 +125,21 @@ class Notifier {
 
         // remove popup after duration if set (else infinite)
         // could have done (Number(settings.duration) != NaN) but I prefer not to compare with a constant value
-        if (!isNaN(settings.duration)) {
+        if (!isNaN(settings.duration) && settings.duration > 0) {
             setTimeout(() => {
                 this.#removeNode(node, settings.postcall);
             }, settings.duration);
+            if (settings.duration_bar) {
+                let duration = 15; // start at 15ms to avoid division by 0
+                let interval = setInterval(() => {
+                    let bar = node.querySelector(".duration-bar");
+                    bar.style.width = `${(duration / settings.duration) * 100}%`;
+                    duration += 16;
+                    if (duration >= settings.duration) {
+                        clearInterval(interval);
+                    }
+                }, 15);
+            }
         }
     }
 
@@ -127,6 +152,7 @@ class Notifier {
             <span class="notifier-close">&#x2715</span>
             <span>${data.title}</span>
             <p>${data.message}</p>
+            <div class="duration-bar"></div>
         `;
 
         // should override the default position
@@ -147,6 +173,6 @@ class Notifier {
 (() => {
     // inject css styles
     let style = document.createElement('style');
-    style.innerText = `.notifier-notification{z-index:9999;position:fixed;display:flex;flex-direction:column;justify-content:space-evenly;min-width:10rem;min-height:3rem;max-width:20rem;padding:5px 10px;color:blue;font-family:'Roboto',sans-serif;border-left:4px solid blue;border-radius:5px;background-color:#D8DEEC;box-shadow:0 0 10px #0000ff73;}.notifier-close:hover{color:red;}.notifier-notification>*{padding:5px 0;}.notifier-notification>span{font-size:1.25rem;font-weight:bold;}.notifier-notification>p{margin:0;overflow:none;overflow-wrap:break-word;}.notifier-close{position:absolute;top:3px;right:5px;padding:0;color:black;cursor:pointer;}.notifier-error{border-left-color:red;background-color:#f8d7da;color:red;}.notifier-warning{border-left-color:orange;background-color:#fff3cd;color:orange;}.notifier-success{border-left-color:green;background-color:#d4edda;color:green;}`;
+    style.innerText = `.notifier-notification{z-index:9999;position:fixed;display:flex;flex-direction:column;justify-content:space-evenly;min-width:10rem;min-height:3rem;max-width:20rem;padding:5px 10px;color:#00f;font-family:'Roboto',sans-serif;border-left:4px solid #00f;border-radius:5px;background-color:#d8deec;box-shadow:0 0 10px #0000ff73}.notifier-close:hover{color:red}.notifier-notification>*{padding:5px 0}.notifier-notification>span{font-size:1.25rem;font-weight:700}.notifier-notification>p{margin:0;overflow:none;overflow-wrap:break-word}.notifier-close{position:absolute;top:3px;right:5px;padding:0;color:#000;cursor:pointer}.duration-bar{position:absolute;bottom:0;left:0;width:0;height:1px;margin:0;padding:0;background-color:#00f}.notifier-error{color:red;border-left-color:red;background-color:#f8d7da}.notifier-error .duration-bar{background-color:red}.notifier-warning{color:orange;border-left-color:orange;background-color:#fff3cd}.notifier-warning .duration-bar{background-color:orange}.notifier-success{color:green;border-left-color:green;background-color:#d4edda}.notifier-success .duration-bar{background-color:green}`;
     document.head.appendChild(style);
 })();
