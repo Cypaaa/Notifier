@@ -1,0 +1,121 @@
+/*
+    Copyright (c) 2024 Cyprien (github: @Cypaaa)
+
+    Permission is hereby granted, free of charge, to any person obtaining
+    a copy of this software and associated documentation files (the
+    "Software"), to deal in the Software without restriction, including
+    without limitation the rights to use, copy, modify, merge, publish,
+    distribute, sublicense, and/or sell copies of the Software, and to
+    permit persons to whom the Software is furnished to do so, subject to
+    the following conditions:
+
+    The above copyright notice and this permission notice shall be
+    included in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+    LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+/* This CSS file has a lot of comments for you to understand how are rules grouped */
+
+.notifier-notification {
+    /* position rules */
+    z-index: 9999;
+    position: fixed;
+
+    /* internal display rules */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+    /* size rules */
+    min-width: 10rem;
+    min-height: 3rem;
+    max-width: 20rem;
+
+    padding: 5px 10px; /* margin and padding counts as size rules even if they "change" the position */
+
+    /* text rules */
+    color: blue;
+    font-family: 'Roboto', sans-serif;
+
+    /* external rules */
+    /* everything that is related to external style such as cursor, scrollbar, background-*, border or outlines, shadows,  ... */
+    border-left: 4px solid blue;
+    border-radius: 5px;
+    background-color: #D8DEEC;
+    box-shadow: 0 0 10px #0000ff73;
+}
+
+.notifier-close:hover {
+    /* text rules */
+    color: red;
+}
+
+.notifier-notification>* {
+    /* size rules */
+    padding: 5px 0;
+}
+
+.notifier-notification>span {
+    /* text rules */
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.notifier-notification>p {
+    /* size rules */
+    margin: 0;
+
+    /* text rules */
+    overflow: none;
+    overflow-wrap: break-word;
+}
+
+.notifier-close {
+    /* position rules */
+    position: absolute;
+    top: 3px;
+    right: 5px;
+
+    /* size rules */
+    padding: 0;
+
+    /* text rules */
+    color: black;
+
+    /* external rules */
+    cursor: pointer;
+}
+
+.notifier-error {
+    /* text rules */
+    color: red;
+
+    /* external rules */
+    border-left-color: red;
+    background-color: #f8d7da;
+}
+
+.notifier-warning {
+    /* text rules */
+    color: orange;
+
+    /* external rules */
+    border-left-color: orange;
+    background-color: #fff3cd;
+}
+
+.notifier-success {
+    /* text rules */
+    color: green;
+
+    /* external rules */
+    border-left-color: green;
+    background-color: #d4edda;
+}
